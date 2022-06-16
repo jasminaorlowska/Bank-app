@@ -53,13 +53,48 @@ public class Login {
                 System.exit(0);
                 break;
             case 1:
-                //create an account;
-                break;
-            case 2:
                 //login
+                //break;
+            case 2:
+                createUser();
                 break;
             default:
-                System.out.println("ups error");
+                System.out.println("Error. Pick  number from 0 to 2.");
         }
+    }
+
+    private void createUser() {
+
+        Scanner another = new Scanner(System.in);
+
+        String username, password;
+        Double balance;
+
+        //warunki na stworzenie konta
+        //boolean valid=false;
+        //while (!valid){
+
+            System.out.println("Enter your username:");
+            //warunki na username
+            username = another.nextLine();
+
+            System.out.println("Enter your password:");
+            //warunki na password
+            password = another.nextLine();
+
+            System.out.println("Enter initial balance:");
+            // warunek na initial balance ??powyzej 2000?
+            balance = another.nextDouble();
+
+        //}
+
+        CheckingAccount account = new CheckingAccount(balance);
+        User user = new User(username, account);
+        bank.loginInfo.put(user, password);
+        bank.bankAccounts.add(account);
+
+        //System.out.println("creating an account");
+        //System.out.println(bank.getAccounts());
+
     }
 }
