@@ -131,7 +131,6 @@ public class Login {
 
         CheckingAccount account = new CheckingAccount(balance);
         User user = new User(username, account);
-        bank.addUser(user, password, account);
 
         //System.out.println("creating an account");
         //System.out.println(bank.getAccounts());

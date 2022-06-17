@@ -4,28 +4,17 @@ import java.util.Scanner;
 public class Main {
     public static void main (String[] args){
 
-        //Bank bank = new Bank(); //tworzymy hashlist z uzytkownikami-haslem i liste z bankaccounts
+        Bank bank = new Bank();
 
         //Login login = new Login(bank);
         //login.runLogin();
 
-        ArrayList<User> userList = new ArrayList<User>();
-
-        User basicUser = new User("ProbnyUser",new CheckingAccount(555));
-        basicUser.addSavingsAccount(new SavingsAccount(222.0));
-        basicUser.getSavingsAccount().setOwner(basicUser);
-        basicUser.getAccount().setOwner(basicUser);
-
-        User secondBasicUser = new User("ProbnyUser2", new CheckingAccount(1000));
-        secondBasicUser.getAccount().setOwner(secondBasicUser);
-
-
-        userList.add(basicUser);
-        userList.add(basicUser);
-
-        Menu menu = new Menu(basicUser);
-        menu.runMenu();
-
+        for (User user : bank.loginInfo.keySet()){
+            System.out.println("--" + user.getAccount().getNumber());
+        }
+        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
+        //menu.runMenu();
+        //menu.sendMoneyTo();
 
 
     }

@@ -1,38 +1,46 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Bank {
 
     HashMap<User, String> loginInfo = new HashMap<User,String>();
-    ArrayList<Account> bankAccounts = new ArrayList<Account>();
 
     Bank(){
-        //loginInfo.put(new User("user1", "User1Password");
+
+        User basicUser = new User("ProbnyUser",new CheckingAccount(555));
+        basicUser.addSavingsAccount(new SavingsAccount(222.0));
+        basicUser.getSavingsAccount().setOwner(basicUser);
+        //basicUser.getAccount().setOwner(basicUser);
+
+        User secondBasicUser = new User("ProbnyUser2", new CheckingAccount(1000));
+        //secondBasicUser.getAccount().setOwner(secondBasicUser);
+
+        User thirdBasicUser = new User("ProbnyUser3", new CheckingAccount(700));
+        //secondBasicUser.getAccount().setOwner(secondBasicUser);
+
+        loginInfo.put(basicUser, "haslo");
+        loginInfo.put(secondBasicUser, "haslo");
+        loginInfo.put(thirdBasicUser, "haslo");
+
     }
 
-    protected HashMap <User, String> getLoginInfo(){
+    public HashMap<User, String> getLoginInfo() {
         return loginInfo;
     }
-    protected ArrayList <Account> getAccounts(){
-        return bankAccounts;
+
+    public User getUser(String userToGet) {
+        for (User user : loginInfo.keySet()) {
+            if (user.getUsername().equals(userToGet)) {
+                return user;
+            }
+        } return null;
     }
 
-    public void addUser(User user, String password, CheckingAccount account){
-//        loginInfo.put(user, password);
-//        bankAccounts.add(account);
-        }
-
-    public void addAccount(Account account){
-        bankAccounts.add(account);
+    public User getUserByAccountNum(int accNumber){
+        for (User user: loginInfo.keySet()){
+            if (user.getAccount().getNumber() == accNumber || user.getSavingsAccount().getNumber() == accNumber){
+                return user;}
+        } return null;
     }
 
-//    public int getAccount(int number){
-//        for (Account account : bankAccounts){
-//            if (account.getNumber() == number){
-//                return 0;
-//            }
-//        }
-//
-//    }
 
 }

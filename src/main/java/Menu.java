@@ -1,3 +1,5 @@
+import jdk.jshell.EvalException;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -7,17 +9,17 @@ public class Menu {
 
     private User user;
 
-    //private Bank bank;
+    private Bank bank;
     //Jak już monika zajmie się bankiem.
-//    public Menu(User user, Bank bank){
-//        this.user = user;
-//        this.bank = bank;
-//    }
+    public Menu(User user, Bank bank){
+        this.user = user;
+        this.bank = bank;
+    }
 
     //do wyjebania potem zamiana z tym co na górze.
-        public Menu(User user){
-        this.user = user;
-    }
+//        public Menu(User user){
+//        this.user = user;
+//    }
 
     public void runMenu(){
         while(!exit){
@@ -124,7 +126,7 @@ public class Menu {
     }
 
     //3
-    private void sendMoneyTo() {
+    public void sendMoneyTo() {
         boolean valid = false;
         System.out.println("Would you like to send money using username or account number: [username/number]: ");
         while (!valid) {
@@ -142,27 +144,60 @@ public class Menu {
         }
     }
     private void sendMoneyToByNumber() {
-        //typeANumber
-        //check if account exists
-        //send money
+        User user = getUserByAccNumber();
+        if (user !=null) {
+            sendMoney(user);
+        }
     }
-    private int getAccountNumber(){
-        System.out.println("Enter an account number.");
-        boolean incorrectNumber = true;
-        while (incorrectNumber) {
+
+    public void sendMoney(User user) {
+
+        System.out.println("How much money would you like to sent?: ");
+        boolean valid=false;
+        while (!valid){
+        double amount = askForAmount();
+        if (amount > user.getAccount().getBalance()){
+            System.out.println("You don't have enough money. Type again.");
+        } else{
+            bank.getUser(user.getUsername()).getAccount().addMoney(amount);
+            user.getAccount().takeMoney(amount);
+            System.out.println("Money has been successfully sent.");
+            valid = true;}
+    }
+
+
+    }
+
+    private User getUserByAccNumber() {
+        User user = bank.getUserByAccountNum(typeAccNumber());
+        if (user != null){
+            return user;
+        } else {
+            System.out.println("No such account number in our database.");
+        }
+        return null;
+    }
+
+    private int typeAccNumber() {
+            int accnumber=-1;
+            boolean valid = false;
+        do{
             try {
-                int amount = new Scanner(System.in).nextInt();
-                incorrectNumber = false;
-                return amount;
+                accnumber = new Scanner(System.in).nextInt();
+                valid = true;
+                return accnumber;
             } catch (Exception e) {
-                System.out.println("Type an int.");
-            }
-        } return -1;
+                System.out.println("Type a number.");
+                //new Scanner(System.in).nextInt();
+            };
+    } while (!valid);
+        return accnumber;
     }
+
     private void sendMoneyToByUsername() {
-        //type a username
-        //check if exists
-        //sendmoney
+        String username = new Scanner(System.in).nextLine();
+        User user = bank.getUser(username);
+        sendMoney(user);
     }
 
     //4
