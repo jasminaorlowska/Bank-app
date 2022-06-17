@@ -1,7 +1,9 @@
+import java.sql.SQLOutput;
+
 public class User {
 
     private String username;
-//    protected String password;
+    private String password;
     private CheckingAccount account;
     private SavingsAccount savingsAccount;
     private Transaction[] history;
@@ -11,8 +13,14 @@ public class User {
         this.account = account;
     }
 
+
     public String getUsername() {
         return username;
+    }
+
+
+    public String getPassword() {
+        return password;
     }
 
     public boolean haveSavingsAccount(){
@@ -22,20 +30,19 @@ public class User {
         }
     }
     public void addSavingsAccount(SavingsAccount account){
+
         this.savingsAccount = account;
     }
 
     public SavingsAccount getSavingsAccount(){
+
         return savingsAccount;
     }
 
     public CheckingAccount getAccount(){
+
         return account;
     }
-
-//    public int getAccNumber(){
-//        return 0;
-//    }
 
 
 
