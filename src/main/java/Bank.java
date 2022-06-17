@@ -18,8 +18,8 @@ public class Bank {
     }
 
     public void addUser(User user, String password, CheckingAccount account){
-        loginInfo.put(user, password);
-        bankAccounts.add(account);
+//        loginInfo.put(user, password);
+//        bankAccounts.add(account);
         }
 
     public void addAccount(Account account){
