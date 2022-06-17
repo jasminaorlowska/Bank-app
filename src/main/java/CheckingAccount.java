@@ -1,7 +1,14 @@
-public class CheckingAccount extends Account {
+public class CheckingAccount extends Account{
 
-    public CheckingAccount(double balance){
-        super(balance);
-    }
+        private int number;
+        private double balance;
+
+        public CheckingAccount(double balance) {
+            super(balance);
+
+
+
+        }
+
 
 }
