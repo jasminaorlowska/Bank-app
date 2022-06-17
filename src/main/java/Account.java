@@ -9,8 +9,7 @@ abstract class Account {
     public Account(double balance){
         this.balance = balance;
         Random rnd = new Random();
-        int number = rnd.nextInt(999999);
-        System.out.println(number);
+        int number = rnd.nextInt(999,9999 );
         this.number = number;
     }
 
@@ -41,6 +40,10 @@ abstract class Account {
         System.out.println("You have successfully deposited " + amount + "$.");
         System.out.println("You have " + getBalance() + " $ left on your account." );
     };
+
+    public void addMoney(double amount){
+        balance = balance + amount;
+    }
 
     @Override
     public String toString() {

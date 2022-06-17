@@ -24,7 +24,7 @@ public class Main {
         userList.add(basicUser);
 
         Menu menu = new Menu(basicUser);
-
+        menu.runMenu();
 
 
 

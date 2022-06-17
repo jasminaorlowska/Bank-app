@@ -22,24 +22,23 @@ public class Menu {
     public void runMenu(){
         while(!exit){
             printMenu();
-            int choice = Login.getInput(keyboard, 7);
+            int choice = Login.getInput(keyboard, 8);
             performActionMenu(choice);
         }
+    }
+
+    private void printMenu(){
+
+        System.out.println("Select:");
+        System.out.println("1) Make Deposit  2) Make withdrawal  3) Send money  4) Show history");
+        System.out.println("5) Display account info  6) Savings Account 7) Get a loan  0) Exit");
+
     }
 
     private void performActionMenu(int choice) {
         switch (choice){
             case 0:
-                System.out.println("Do you want to exit the system or log into a different account? (exit/logout): ");
-                String answer = keyboard.nextLine();
-                if (answer.equalsIgnoreCase("exit") || answer.equalsIgnoreCase("logout")){
-                    if (answer.equalsIgnoreCase("exit")){System.out.println("Goodbye, " + user.getUsername());}
-                    else {
-                        System.out.println("Logging out");
-                    }
-                } else {
-                    System.out.println("Wrong input");
-                }
+                exitOrLogout();
                 break;
             case 1:
                 makeDeposit();
@@ -48,16 +47,19 @@ public class Menu {
                 makeWithdrawal();
                 break;
             case 3:
-                //sendMoneyTo();
+                sendMoneyTo();
                 break;
             case 4:
                 showTransactions();
                 break;
             case 5:
-                //displayAccount();
+                displayAccount();
                 break;
             case 6:
-                //mySavingsAccount();
+                mySavingsAccount();
+                break;
+            case 7:
+                askToTakeLoan();
                 break;
             default:
                 System.out.println("Error. Pick a number from 0 to 6.");
@@ -65,21 +67,21 @@ public class Menu {
 
     }
 
-    private void sendMoneyTo(int accNumber) {
-//            double amount = askForAmount();
-//            receiver = getReceiver();
 
+    //1
+    private void makeDeposit() {
+        Account pickedAccount = pickAccount();
+        double amount = askForAmount();
+        pickedAccount.deposit(amount);
+        user.writeDownTransaction("deposit", amount,pickedAccount);
     }
 
-    public void showTransactions() {
-            user.showTransactions();
-    }
-
+    //2
     private Account pickAccount(){
         String account;
         Account pickedAccount = user.getAccount();
         boolean valid = false;
-        if (user.haveSavingsAccount()){
+        if (user.hasSavingsAccount()){
             while(!valid){
                 System.out.println("Pick an account: savings/checking:");
                 account = keyboard.nextLine();
@@ -94,7 +96,6 @@ public class Menu {
         } return pickedAccount;
 
     }
-
     private Double askForAmount() {
 
         boolean incorrectDouble = true;
@@ -104,6 +105,9 @@ public class Menu {
         while (incorrectDouble) {
             try {
                 double amount = new Scanner(System.in).nextDouble();
+                if (amount<=0){
+                    System.out.println("You can't type negative number. Type again.");continue;
+                }
                 incorrectDouble = false;
                 return amount;
             } catch (Exception e) {
@@ -112,35 +116,176 @@ public class Menu {
         }
         return 0.0;
     }
-
-
-    public void makeDeposit() {
-        Account pickedAccount = pickAccount();
-        double amount = askForAmount();
-        pickedAccount.deposit(amount);
-        user.writeDownTransaction("deposit", amount,pickedAccount);
-    }
-
-    public void makeWithdrawal(){
+    private void makeWithdrawal(){
         Account pickedAccount = pickAccount();
         double amount = askForAmount();
         pickedAccount.withdraw(amount);
         user.writeDownTransaction("withdrawal", amount,pickedAccount);
     }
 
+    //3
+    private void sendMoneyTo() {
+        boolean valid = false;
+        System.out.println("Would you like to send money using username or account number: [username/number]: ");
+        while (!valid) {
+            String answer = new Scanner(System.in).nextLine();
+            if (answer.equalsIgnoreCase("username")){
+                sendMoneyToByUsername();
+                valid = true;
+            } if (answer.equalsIgnoreCase("number")){
+                sendMoneyToByNumber();
+                valid = true;
+            }
+            else {
+                System.out.println("Incorrect input. Try again.");
+            }
+        }
+    }
+    private void sendMoneyToByNumber() {
+        //typeANumber
+        //check if account exists
+        //send money
+    }
+    private int getAccountNumber(){
+        System.out.println("Enter an account number.");
+        boolean incorrectNumber = true;
+        while (incorrectNumber) {
+            try {
+                int amount = new Scanner(System.in).nextInt();
+                incorrectNumber = false;
+                return amount;
+            } catch (Exception e) {
+                System.out.println("Type an int.");
+            }
+        } return -1;
+    }
+    private void sendMoneyToByUsername() {
+        //type a username
+        //check if exists
+        //sendmoney
+    }
 
-    public void printMenu(){
+    //4
+    private void showTransactions() {
+        user.showTransactions();
+    }
 
-        System.out.println("Select");
-        System.out.println("1) Make Deposit");
-        System.out.println("2) Make withdrawal");
-        System.out.println("3) Send money");
-        System.out.println("4) Show history");
-        System.out.println("5) Display account info");
-        System.out.println("6) My Saving Account");
-        System.out.println("0) Exit");
+    //5
+    private void mySavingsAccount() {
+        if(user.hasSavingsAccount()){
+            System.out.println("You already have a saving account. Here are the details.");
+            System.out.println(user.getSavingsAccount().toString());
+        } else {
+            System.out.println("You don't have a saving account. Do you want to create one? [yes/no]: ");
+            boolean valid = false;
+            while (!valid) {
+                String answer = new Scanner(System.in).nextLine();
+                if (answer.equalsIgnoreCase("yes")) {
+                    createSavingsAccount();
+                    valid = true;
+                } if (answer.equalsIgnoreCase("no")){
+                    valid = true;
+                } else {
+                    System.out.println("Incorrect input.");
+                }
+                }
+            }
+        }
+    private void createSavingsAccount() {
 
     }
+
+    //6
+    private void displayAccount() {
+        System.out.println(user.toString());
+    }
+
+    //7
+    private void askToTakeLoan() {
+
+        if (user.getNumberOfLoans() > 2) {
+            System.out.println("You can't take a loan. You have a maximum number of loans.");
+        } else {
+
+            int maxLoan = checkLoan();
+
+            System.out.println("Do you want to take a loan?: [yes/no]: ");
+            boolean valid = false;
+
+            while (!valid) {
+
+                String answer = new Scanner(System.in).nextLine();
+
+                if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("no")) {
+                    if (answer.equalsIgnoreCase("yes")){
+                        takeLoan(maxLoan);
+                    }
+                        valid = true;
+                }
+                else {
+                    System.out.println("Incorrect input.");
+                }
+            }
+        }
+    }
+    private void takeLoan(int maxLoan){
+        System.out.println("You're taking a loan.");
+
+        while (true){
+
+            double amount;
+            amount = askForAmount();
+
+            if (amount > maxLoan) {
+                System.out.println("You can't take this loan. Your maximum loan is " + maxLoan + ". ");
+                System.out.print("Type again.");
+            }
+            else {
+                    user.takeLoan(amount);
+                    System.out.println("You have just taken a loan. Current balance: " + user.getAccount().getBalance());
+                    break;
+            }
+        }
+    }
+    private int checkLoan(){
+        double balance = user.getAccount().getBalance();
+        double percentage = 1;
+        int availableLoan;
+        if (user.getNumberOfLoans() ==1) {percentage = .75;}
+        if(balance < 20000){
+            if (balance < 10000){
+                availableLoan = (int)(balance * percentage * 1.3);
+                System.out.println("Available loan: " +availableLoan);return availableLoan;
+            } else {availableLoan = (int)(balance * percentage * 1.5);
+                System.out.println("Available loan: " +availableLoan);return availableLoan;}
+        } if (balance> 2000){availableLoan = (int)(balance * percentage * 1.75);
+            System.out.println("Available loan: " +availableLoan);return availableLoan;}
+        return -1;
+    }
+
+    //0
+    private void exitOrLogout() {
+        System.out.println("Do you want to exit the system or log into a different account? (exit/logout): ");
+        String answer = keyboard.nextLine();
+        if (answer.equalsIgnoreCase("exit") || answer.equalsIgnoreCase("logout")) {
+            if (answer.equalsIgnoreCase("exit")) {
+                System.out.println("Goodbye, " + user.getUsername());
+            } else {
+                System.out.println("Logging out");
+            }
+        } else {
+            System.out.println("Wrong input");
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 }
