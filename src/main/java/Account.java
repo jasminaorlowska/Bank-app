@@ -44,6 +44,7 @@ abstract class Account {
     public void addMoney(double amount){
         balance = balance + amount;
     }
+    public void takeMoney (double amount) {balance = balance - amount;}
 
     @Override
     public String toString() {
