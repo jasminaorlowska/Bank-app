@@ -1,3 +1,5 @@
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Login {
@@ -53,8 +55,8 @@ public class Login {
                 System.exit(0);
                 break;
             case 1:
-                //login
-                //break;
+                login();
+                break;
             case 2:
                 createUser();
                 break;
@@ -63,38 +65,99 @@ public class Login {
         }
     }
 
-    private void createUser() {
+    protected void createUser() {
 
-        Scanner another = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-        String username, password;
-        Double balance;
+        String username = null, password = null;
+        Double balance = null;
+        boolean valid = false;
 
-        //warunki na stworzenie konta
-        //boolean valid=false;
-        //while (!valid){
+        while(!valid){
+            System.out.println("Enter your username: ");
+            username = scanner.nextLine();
+            if(username.length()<5) {
+                System.out.println("Username needs to be at least 5 characters long.");
+                break;
+            }
+            System.out.println("Enter your password: ");
+            password = scanner.nextLine();
+            if(password.length()<10){
+                System.out.println("Password needs to be at least 10 characters long.");
+                break;
+            }
 
-            System.out.println("Enter your username:");
-            //warunki na username
-            username = another.nextLine();
+            System.out.println("Enter your initial balance: ");
+            try {
+                balance = (Double.parseDouble(scanner.nextLine()));
+            }
+            catch(NumberFormatException e){
+                System.out.println("Initial balance must be a number.");
+            }
+            if(balance < 1000){
+                System.out.println("Initial balance must be at least 1000");
+            }
+            else{
+                valid = true;
+            }
 
-            System.out.println("Enter your password:");
-            //warunki na password
-            password = another.nextLine();
+            break;
+        }
 
-            System.out.println("Enter initial balance:");
-            // warunek na initial balance ??powyzej 2000?
-            balance = another.nextDouble();
 
-        //}
+        if(valid = true) {
+            CheckingAccount account = new CheckingAccount(balance);
+            User user = new User(username, account);
+            bank.addUser(user, password);
+            bank.getLoginInfo().put(user, password);
 
-        CheckingAccount account = new CheckingAccount(balance);
-        User user = new User(username, account);
-        bank.loginInfo.put(user, password);
-        bank.bankAccounts.add(account);
-
-        //System.out.println("creating an account");
-        //System.out.println(bank.getAccounts());
+            System.out.println("Creating an account.");
+        }
 
     }
-}
+
+
+    private void login() {
+
+        String username, password;
+        boolean logged = false;
+
+        System.out.println("Enter your username:");
+        username = keyboard.nextLine();
+
+        System.out.println("Enter your password:");
+        password = keyboard.nextLine();
+
+//        while(!logged){
+//            bank.getLoginInfo().
+//                    for(User user : bank.getLoginInfo().keySet()){
+//                        if(user.getUsername().equals(username)){
+//                            if(user.)
+//                        }
+//                    }
+//        }
+
+
+        while(!logged) {
+            Iterator it = bank.getLoginInfo().entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry<User, String> m = (Map.Entry) it.next();
+                if (m.getKey().getUsername().equals(username)) {
+                    if(m.getValue().equals(password)){
+                        System.out.println("You've successfully logged in!");
+                        logged = true;
+                        break;
+                    }
+                    else{
+                        System.out.println("Password is incorrect. Try again.");
+                    }
+                }
+
+
+            }
+            break;
+        }
+
+
+}}

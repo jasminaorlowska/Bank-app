@@ -9,5 +9,13 @@ public class User {
         this.username = username;
         this.account = account;
     }
+    public String getUsername() {
+        return username;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
 
 }
