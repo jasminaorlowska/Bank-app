@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Map;
@@ -115,7 +116,11 @@ public class Login {
         if(valid = true) {
             CheckingAccount account = new CheckingAccount(balance);
             User user = new User(username, account);
-            bank.addUser(user, password);
+            try {
+                bank.addUser(user, password);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             bank.getLoginInfo().put(user, password);
 
             System.out.println("Creating an account.");

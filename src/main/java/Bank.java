@@ -1,5 +1,9 @@
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Bank {
 
@@ -18,19 +22,24 @@ public class Bank {
         return loginInfo;
     }
 
-    public void addUser(User user, String password){
+    public void addUser(User user, String password) throws FileNotFoundException {
         loginInfo.put(user, password);
-        System.out.println("put");
+
+        File csvDane = new File("dane.csv");
+        PrintWriter out = new PrintWriter(csvDane);
+
+        Iterator it = getLoginInfo().entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry<User, String> m = (Map.Entry) it.next();
+            out.println(m.getKey().getUsername() + " " + m.getValue());
+
+
         }
 
 
-//    public int getAccount(int number){
-//        for (Account account : bankAccounts){
-//            if (account.getNumber() == number){
-//                return 0;
-//            }
-//        }
-//
-//    }
+        out.close();
 
-}
+
+
+}}
