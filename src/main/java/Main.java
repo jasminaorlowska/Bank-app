@@ -1,19 +1,22 @@
+import java.util.ArrayList; //do wyjebania później;
+import java.util.Scanner;
+
 public class Main {
     public static void main (String[] args){
 
         Bank bank = new Bank();
-        Login login = new Login();
-        login.runLogin();
+
+        //Login login = new Login(bank);
+        //login.runLogin();
+
+//        for (User user : bank.loginInfo.keySet()){
+//            System.out.println("--" + user.getAccount().getNumber());
+//        }
+
+        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
+        menu.runMenu();
+        //menu.sendMoneyTo();
 
 
-
-//        CheckingAccount basicAccount = new CheckingAccount(123.0);
-//        User basicUser = new User("ProbnyUser",basicAccount);
-//        basicUser.addSavingsAccount(new SavingsAccount(222.0));
-//        System.out.println(basicUser.haveSavingsAccount());
-//
-//        Menu menu = new Menu(basicUser);
-//        menu.makeDeposit();
-//        System.out.println(basicUser.getSavingsAccount().getBalance());
     }
 }
