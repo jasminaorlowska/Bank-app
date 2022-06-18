@@ -1,46 +1,45 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Bank {
 
     HashMap<User, String> loginInfo = new HashMap<User,String>();
 
     Bank(){
-
-        User basicUser = new User("ProbnyUser",new CheckingAccount(555));
-        basicUser.addSavingsAccount(new SavingsAccount(222.0));
-        basicUser.getSavingsAccount().setOwner(basicUser);
-        //basicUser.getAccount().setOwner(basicUser);
-
-        User secondBasicUser = new User("ProbnyUser2", new CheckingAccount(1000));
-        //secondBasicUser.getAccount().setOwner(secondBasicUser);
-
-        User thirdBasicUser = new User("ProbnyUser3", new CheckingAccount(700));
-        //secondBasicUser.getAccount().setOwner(secondBasicUser);
-
-        loginInfo.put(basicUser, "haslo");
-        loginInfo.put(secondBasicUser, "haslo");
-        loginInfo.put(thirdBasicUser, "haslo");
-
+        CheckingAccount account = new CheckingAccount(253526);
+        CheckingAccount account2 = new CheckingAccount(25526);
+        CheckingAccount account3 = new CheckingAccount(2526);
+        loginInfo.put(new User("user1", account), "haslo1");
+        loginInfo.put(new User("user2", account2), "haslo2");
+        loginInfo.put(new User("user3", account3), "haslo3");
     }
 
-    public HashMap<User, String> getLoginInfo() {
+    protected HashMap<User, String> getLoginInfo(){
         return loginInfo;
     }
 
-    public User getUser(String userToGet) {
-        for (User user : loginInfo.keySet()) {
-            if (user.getUsername().equals(userToGet)) {
-                return user;
-            }
-        } return null;
-    }
+    public void addUser(User user, String password) throws FileNotFoundException {
+        loginInfo.put(user, password);
 
-    public User getUserByAccountNum(int accNumber){
-        for (User user: loginInfo.keySet()){
-            if (user.getAccount().getNumber() == accNumber || user.getSavingsAccount().getNumber() == accNumber){
-                return user;}
-        } return null;
-    }
+        File csvDane = new File("dane.csv");
+        PrintWriter out = new PrintWriter(csvDane);
+
+        Iterator it = getLoginInfo().entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry<User, String> m = (Map.Entry) it.next();
+            out.println(m.getKey().getUsername() + " " + m.getValue());
 
 
-}
+        }
+
+
+        out.close();
+
+
+
+}}

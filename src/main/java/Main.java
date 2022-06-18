@@ -13,9 +13,9 @@ public class Main {
 //            System.out.println("--" + user.getAccount().getNumber());
 //        }
 
-        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
-        menu.runMenu();
-        //menu.sendMoneyTo();
+//        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
+//        menu.runMenu();
+//        //menu.sendMoneyTo();
 
 
     }
