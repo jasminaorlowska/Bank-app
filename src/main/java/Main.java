@@ -9,11 +9,12 @@ public class Main {
         //Login login = new Login(bank);
         //login.runLogin();
 
-        for (User user : bank.loginInfo.keySet()){
-            System.out.println("--" + user.getAccount().getNumber());
-        }
+//        for (User user : bank.loginInfo.keySet()){
+//            System.out.println("--" + user.getAccount().getNumber());
+//        }
+
         Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
-        //menu.runMenu();
+        menu.runMenu();
         //menu.sendMoneyTo();
 
 
