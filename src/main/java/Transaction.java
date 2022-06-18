@@ -8,7 +8,7 @@ public class Transaction {
     private double amount;
     private int receiverAccNum;
 
-    public  Transaction(String type,  double amount, int receiverAccNum){
+    public  Transaction(String type,  double amount, Account account){
         String currTime;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -16,7 +16,7 @@ public class Transaction {
         this.time = currTime;
         this.type = type;
         this.amount = amount;
-        this.receiverAccNum = receiverAccNum;
+        this.receiverAccNum = account.getNumber();
     }
 
     @Override
