@@ -49,7 +49,7 @@ public class Menu {
                 makeWithdrawal();
                 break;
             case 3:
-                sendMoneyTo();
+//                sendMoneyTo();
                 break;
             case 4:
                 showTransactions();
@@ -126,57 +126,57 @@ public class Menu {
     }
 
     //3
-    public void sendMoneyTo() {
-        boolean valid = false;
-        System.out.println("Would you like to send money using username or account number: [username/number]: ");
-        while (!valid) {
-            String answer = new Scanner(System.in).nextLine();
-            if (answer.equalsIgnoreCase("username")){
-                sendMoneyToByUsername();
-                valid = true;
-            } if (answer.equalsIgnoreCase("number")){
-                sendMoneyToByNumber();
-                valid = true;
-            }
-            else {
-                System.out.println("Incorrect input. Try again.");
-            }
-        }
-    }
-    private void sendMoneyToByNumber() {
-        User user = getUserByAccNumber();
-        if (user !=null) {
-            sendMoney(user);
-        }
-    }
+//    public void sendMoneyTo() {
+//        boolean valid = false;
+//        System.out.println("Would you like to send money using username or account number: [username/number]: ");
+//        while (!valid) {
+//            String answer = new Scanner(System.in).nextLine();
+//            if (answer.equalsIgnoreCase("username")){
+//                sendMoneyToByUsername();
+//                valid = true;
+//            } if (answer.equalsIgnoreCase("number")){
+//                sendMoneyToByNumber();
+//                valid = true;
+//            }
+//            else {
+//                System.out.println("Incorrect input. Try again.");
+//            }
+//        }
+//    }
+//    private void sendMoneyToByNumber() {
+//        User user = getUserByAccNumber();
+//        if (user !=null) {
+//            sendMoney(user);
+//        }
+//    }
 
-    public void sendMoney(User user) {
+//    public void sendMoney(User user) {
+//
+//        System.out.println("How much money would you like to sent?: ");
+//        boolean valid=false;
+//        while (!valid){
+//        double amount = askForAmount();
+//        if (amount > user.getAccount().getBalance()){
+//            System.out.println("You don't have enough money. Type again.");
+//        } else{
+//            bank.getUser(user.getUsername()).getAccount().addMoney(amount);
+//            user.getAccount().takeMoney(amount);
+//            System.out.println("Money has been successfully sent.");
+//            valid = true;}
+//    }
 
-        System.out.println("How much money would you like to sent?: ");
-        boolean valid=false;
-        while (!valid){
-        double amount = askForAmount();
-        if (amount > user.getAccount().getBalance()){
-            System.out.println("You don't have enough money. Type again.");
-        } else{
-            bank.getUser(user.getUsername()).getAccount().addMoney(amount);
-            user.getAccount().takeMoney(amount);
-            System.out.println("Money has been successfully sent.");
-            valid = true;}
-    }
 
+//    }
 
-    }
-
-    private User getUserByAccNumber() {
-        User user = bank.getUserByAccountNum(typeAccNumber());
-        if (user != null){
-            return user;
-        } else {
-            System.out.println("No such account number in our database.");
-        }
-        return null;
-    }
+//    private User getUserByAccNumber() {
+//        User user = bank.getUserByAccountNum(typeAccNumber());
+//        if (user != null){
+//            return user;
+//        } else {
+//            System.out.println("No such account number in our database.");
+//        }
+//        return null;
+//    }
 
     private int typeAccNumber() {
             int accnumber=-1;
@@ -194,11 +194,11 @@ public class Menu {
         return accnumber;
     }
 
-    private void sendMoneyToByUsername() {
-        String username = new Scanner(System.in).nextLine();
-        User user = bank.getUser(username);
-        sendMoney(user);
-    }
+//    private void sendMoneyToByUsername() {
+//        String username = new Scanner(System.in).nextLine();
+//        User user = bank.getUser(username);
+//        sendMoney(user);
+//    }
 
     //4
     private void showTransactions() {
