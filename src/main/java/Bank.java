@@ -1,13 +1,14 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.*;
+import java.util.*;
 
 public class Bank {
 
     HashMap<User, String> loginInfo = new HashMap<User,String>();
+    HashMap<String, String> forLogin = new HashMap<>();
+
 
     Bank(){
         CheckingAccount account = new CheckingAccount(253526);
@@ -22,24 +23,52 @@ public class Bank {
         return loginInfo;
     }
 
-    public void addUser(User user, String password) throws FileNotFoundException {
+    File csvDane = new File("dane.csv");
+    PrintWriter out;
+
+    {
+        try {
+            out = new PrintWriter(csvDane);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addUser(User user, String password) throws IOException {
         loginInfo.put(user, password);
-
-        File csvDane = new File("dane.csv");
-        PrintWriter out = new PrintWriter(csvDane);
-
         Iterator it = getLoginInfo().entrySet().iterator();
 
         while (it.hasNext()) {
             Map.Entry<User, String> m = (Map.Entry) it.next();
-            out.println(m.getKey().getUsername() + " " + m.getValue());
-
-
+            out.println(m.getKey().getUsername() + "," + m.getValue() + "," + m.getKey().getAccount().getNumber());
         }
+
 
 
         out.close();
 
+//        Reader in = new FileReader("dane.csv");
+//        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+//
+//        for (CSVRecord record : records){
+//            System.out.println(record.get(0) +","+ record.get(1) +","+ record.get(2));
+//            forLogin.put(record.get(0), record.get(1));
+//
+//        }
+//        System.out.println(forLogin);
 
 
-}}
+    }
+
+    public void readFromFile() throws IOException {
+
+        Reader in = new FileReader("dane.csv");
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+
+        for (CSVRecord record : records){
+            forLogin.put(record.get(0), record.get(1));
+
+        }
+        }
+
+}
