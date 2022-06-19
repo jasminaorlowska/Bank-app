@@ -10,12 +10,16 @@ public class Menu {
     private User user;
 
     private Bank bank;
-
+    //Jak już monika zajmie się bankiem.
     public Menu(User user, Bank bank){
         this.user = user;
         this.bank = bank;
     }
 
+    //do wyjebania potem zamiana z tym co na górze.
+//        public Menu(User user){
+//        this.user = user;
+//    }
 
     public void runMenu(){
         while(!exit){
@@ -308,6 +312,14 @@ public class Menu {
             System.out.println("Wrong input");
         }
     }
+
+
+
+
+
+
+
+
 
 
 

@@ -12,7 +12,6 @@ public class Login {
 
         this.bank = bank;
     }
-
     boolean exit;
 
 
@@ -64,7 +63,6 @@ public class Login {
                 break;
             case 1:
                 login();
-
                 break;
             case 2:
                 createUser();
@@ -82,125 +80,83 @@ public class Login {
         Double balance = null;
         boolean valid = false;
 
-        while(!valid){
+        while (!valid) {
 
-            boolean validData=false;
-
+            boolean validData = false;
             while (!validData) {
                 System.out.println("Enter your username: ");
                 username = scanner.nextLine();
                 if (username.length() < 5) {
                     System.out.println("Username needs to be at least 5 characters long.");
-                } else  {validData=true;}
+                } else {
+                    validData = true;
+                }
             }
-
-            validData=false;
-
-            while (!validData) {
-            System.out.println("Enter your password: ");
-            password = scanner.nextLine();
-            if(password.length()<8){
-                System.out.println("Password needs to be at least 8 characters long.");
-                } else {validData=true;}
-            }
-
             validData = false;
             while (!validData) {
-            System.out.println("Enter your initial balance: ");
-            try {
-                balance = (Double.parseDouble(scanner.nextLine()));
-            }
-            catch(NumberFormatException e){
-                System.out.println("Initial balance must be a number.");
-            }
-            if(balance < 1000){
-                System.out.println("Initial balance must be at least 1000");
-            }
-            else{
-                validData=true;
-                valid = true;
-            }
-            }
-        }
+                System.out.println("Enter your password: ");
+                password = scanner.nextLine();
+                if (password.length() < 7) {
+                    System.out.println("Password needs to be at least 7 characters long.");
+                } else {
+                    validData = true;
+                }
+
+                validData = false;
+                while (!validData) {
+                System.out.println("Enter your initial balance: ");
+                try {
+                    balance = (Double.parseDouble(scanner.nextLine()));
+                } catch (NumberFormatException e) {
+                    System.out.println("Initial balance must be a number.");
+                }
+                if (balance < 1000) {
+                    System.out.println("Initial balance must be at least 1000");
+                } else {
+                    valid = true;
+                    validData = true;
+                }}
+            }}
 
 
-        if(valid) {
-            CheckingAccount account = new CheckingAccount(balance);
-            User user = new User(username, account);
-            try {
+            if (valid = true) {
+                CheckingAccount account = new CheckingAccount(balance);
+                User user = new User(username, account);
                 bank.addUser(user, password);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //bank.getLoginInfo().put(user, password);
-
-            System.out.println("Creating an account.");
+                System.out.println("Registration successful.");
         }
-
     }
 
 
-        private void login() throws IOException {
+        private void login () throws IOException {
 
             String username, password;
             boolean logged = false;
             bank.readFromFile();
 
-        System.out.println("Enter your username:");
-        username = keyboard.nextLine();
+            System.out.println("Enter your username:");
+            username = keyboard.nextLine();
 
-        System.out.println("Enter your password:");
-        password = keyboard.nextLine();
-
-//        while(!logged){
-//            bank.getLoginInfo().
-//                    for(User user : bank.getLoginInfo().keySet()){
-//                        if(user.getUsername().equals(username)){
-//                            if(user.)
-//                        }
-//                    }
-//        }
+            System.out.println("Enter your password:");
+            password = keyboard.nextLine();
 
 
-
-            while(!logged) {
-
-//                Iterator it = bank.getLoginInfo().entrySet().iterator();
-//
-//                while (it.hasNext()) {
-//                    Map.Entry<User, String> m = (Map.Entry) it.next();
-//                    if (m.getKey().getUsername().equals(username)) {
-//                        if(m.getValue().equals(password)){
-//                            System.out.println("You've successfully logged in!");
-//                            logged = true;
-//                            break;
-//                        }
-//                        else{
-//                            System.out.println("Password is incorrect. Try again.");
-//                        }
-//                    }
-//
-//
-//                }
-//                break;
+            while (!logged) {
 
                 Iterator it = bank.forLogin.entrySet().iterator();
 
                 while (it.hasNext()) {
                     Map.Entry<String, String> m = (Map.Entry) it.next();
                     if (m.getKey().equals(username)) {
-                        if(m.getValue().equals(password)){
+                        if (m.getValue().equals(password)) {
                             System.out.println("You've successfully logged in!");
                             logged = true;
                             break;
-                        }
-                        else{
+                        } else {
                             System.out.println("Password is incorrect. Try again.");
                         }
                     }
+
                 }
                 break;
 
@@ -210,16 +166,8 @@ public class Login {
         }
 
 
-
-
-
-
-
-
-
-
-
     }
+
 
 
 
