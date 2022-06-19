@@ -10,7 +10,7 @@ public class Bank {
     HashMap<String, String> forLogin = new HashMap<>();
 
 
-    Bank(){
+    public Bank() throws IOException {
         CheckingAccount account = new CheckingAccount(253526);
         CheckingAccount account2 = new CheckingAccount(25526);
         CheckingAccount account3 = new CheckingAccount(2526);
@@ -35,15 +35,15 @@ public class Bank {
     }
 
     public void addUser(User user, String password) throws IOException {
+
         loginInfo.put(user, password);
+
         Iterator it = getLoginInfo().entrySet().iterator();
 
         while (it.hasNext()) {
             Map.Entry<User, String> m = (Map.Entry) it.next();
             out.println(m.getKey().getUsername() + "," + m.getValue() + "," + m.getKey().getAccount().getNumber());
         }
-
-
 
         out.close();
 
@@ -57,8 +57,22 @@ public class Bank {
 //        }
 //        System.out.println(forLogin);
 
+   }
 
-    }
+//    public void addUser(User user, String password){
+//        try {
+//            BufferedWriter bw = new BufferedWriter(fw);
+//            PrintWriter pw = new PrintWriter(bw);
+//            pw.println( user.getUsername() + "," +password + "," + user.getAccount().getNumber() + ",");
+//            pw.flush();
+//            pw.close();
+//        }
+//        catch (Exception e){
+//            System.out.println("Record not saved.");
+//        }
+//        //loginInfo.put(user, password);
+//    }
+
 
     public void readFromFile() throws IOException {
 

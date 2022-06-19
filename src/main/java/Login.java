@@ -12,7 +12,6 @@ public class Login {
 
         this.bank = bank;
     }
-//    Bank bank = new Bank();
 
     boolean exit;
 
@@ -84,19 +83,29 @@ public class Login {
         boolean valid = false;
 
         while(!valid){
-            System.out.println("Enter your username: ");
-            username = scanner.nextLine();
-            if(username.length()<5) {
-                System.out.println("Username needs to be at least 5 characters long.");
-                break;
-            }
-            System.out.println("Enter your password: ");
-            password = scanner.nextLine();
-            if(password.length()<10){
-                System.out.println("Password needs to be at least 10 characters long.");
-                break;
+
+            boolean validData=false;
+
+            while (!validData) {
+                System.out.println("Enter your username: ");
+                username = scanner.nextLine();
+                if (username.length() < 5) {
+                    System.out.println("Username needs to be at least 5 characters long.");
+                } else  {validData=true;}
             }
 
+            validData=false;
+
+            while (!validData) {
+            System.out.println("Enter your password: ");
+            password = scanner.nextLine();
+            if(password.length()<8){
+                System.out.println("Password needs to be at least 8 characters long.");
+                } else {validData=true;}
+            }
+
+            validData = false;
+            while (!validData) {
             System.out.println("Enter your initial balance: ");
             try {
                 balance = (Double.parseDouble(scanner.nextLine()));
@@ -108,14 +117,14 @@ public class Login {
                 System.out.println("Initial balance must be at least 1000");
             }
             else{
+                validData=true;
                 valid = true;
             }
-
-            break;
+            }
         }
 
 
-        if(valid = true) {
+        if(valid) {
             CheckingAccount account = new CheckingAccount(balance);
             User user = new User(username, account);
             try {
@@ -125,7 +134,8 @@ public class Login {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bank.getLoginInfo().put(user, password);
+
+            //bank.getLoginInfo().put(user, password);
 
             System.out.println("Creating an account.");
         }
@@ -191,8 +201,6 @@ public class Login {
                             System.out.println("Password is incorrect. Try again.");
                         }
                     }
-
-
                 }
                 break;
 
