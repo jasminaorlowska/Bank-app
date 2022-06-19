@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Map;
@@ -6,17 +7,17 @@ public class Login {
 
     Scanner keyboard = new Scanner(System.in);
 
-//    private Bank bank;
-//    public Login(Bank bank){
-//
-//        this.bank = bank;
-//    }
-    Bank bank = new Bank();
+    private Bank bank;
+    public Login(Bank bank){
+
+        this.bank = bank;
+    }
+//    Bank bank = new Bank();
 
     boolean exit;
 
 
-    public void runLogin(){
+    public void runLogin() throws IOException {
         printHeader();
         while(!exit){
             printLogin();
@@ -56,7 +57,7 @@ public class Login {
     }
 
 
-    private void performAction(int choice) {
+    private void performAction(int choice) throws IOException {
         switch (choice){
             case 0:
                 System.out.println("Goodbye.");
@@ -64,6 +65,7 @@ public class Login {
                 break;
             case 1:
                 login();
+
                 break;
             case 2:
                 createUser();
@@ -120,6 +122,8 @@ public class Login {
                 bank.addUser(user, password);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             bank.getLoginInfo().put(user, password);
 
@@ -129,10 +133,11 @@ public class Login {
     }
 
 
-        private void login() {
+        private void login() throws IOException {
 
             String username, password;
             boolean logged = false;
+            bank.readFromFile();
 
         System.out.println("Enter your username:");
         username = keyboard.nextLine();
@@ -150,12 +155,33 @@ public class Login {
 //        }
 
 
+
             while(!logged) {
-                Iterator it = bank.getLoginInfo().entrySet().iterator();
+
+//                Iterator it = bank.getLoginInfo().entrySet().iterator();
+//
+//                while (it.hasNext()) {
+//                    Map.Entry<User, String> m = (Map.Entry) it.next();
+//                    if (m.getKey().getUsername().equals(username)) {
+//                        if(m.getValue().equals(password)){
+//                            System.out.println("You've successfully logged in!");
+//                            logged = true;
+//                            break;
+//                        }
+//                        else{
+//                            System.out.println("Password is incorrect. Try again.");
+//                        }
+//                    }
+//
+//
+//                }
+//                break;
+
+                Iterator it = bank.forLogin.entrySet().iterator();
 
                 while (it.hasNext()) {
-                    Map.Entry<User, String> m = (Map.Entry) it.next();
-                    if (m.getKey().getUsername().equals(username)) {
+                    Map.Entry<String, String> m = (Map.Entry) it.next();
+                    if (m.getKey().equals(username)) {
                         if(m.getValue().equals(password)){
                             System.out.println("You've successfully logged in!");
                             logged = true;
@@ -169,7 +195,9 @@ public class Login {
 
                 }
                 break;
+
             }
+
 //
         }
 
