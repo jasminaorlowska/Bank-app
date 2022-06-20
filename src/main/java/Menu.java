@@ -10,16 +10,12 @@ public class Menu {
     private User user;
 
     private Bank bank;
-    //Jak już monika zajmie się bankiem.
+
     public Menu(User user, Bank bank){
         this.user = user;
         this.bank = bank;
     }
 
-    //do wyjebania potem zamiana z tym co na górze.
-//        public Menu(User user){
-//        this.user = user;
-//    }
 
     public void runMenu(){
         while(!exit){
@@ -38,34 +34,34 @@ public class Menu {
     }
 
     private void performActionMenu(int choice) {
-        switch (choice){
-            case 0:
-                exitOrLogout();
-                break;
-            case 1:
-                makeDeposit();
-                break;
-            case 2:
-                makeWithdrawal();
-                break;
-            case 3:
-//                sendMoneyTo();
-                break;
-            case 4:
-                showTransactions();
-                break;
-            case 5:
-                displayAccount();
-                break;
-            case 6:
-                mySavingsAccount();
-                break;
-            case 7:
-                askToTakeLoan();
-                break;
-            default:
-                System.out.println("Error. Pick a number from 0 to 6.");
-        }
+            switch (choice) {
+                case 0:
+                    exit = exitOrLogout();
+                    break;
+                case 1:
+                    makeDeposit();
+                    break;
+                case 2:
+                    makeWithdrawal();
+                    break;
+                case 3:
+                    sendMoneyTo();
+                    break;
+                case 4:
+                    showTransactions();
+                    break;
+                case 5:
+                    displayAccount();
+                    break;
+                case 6:
+                    mySavingsAccount();
+                    break;
+                case 7:
+                    askToTakeLoan();
+                    break;
+                default:
+                    System.out.println("Error. Pick a number from 0 to 6.");
+            }
 
     }
 
@@ -126,79 +122,41 @@ public class Menu {
     }
 
     //3
-//    public void sendMoneyTo() {
-//        boolean valid = false;
-//        System.out.println("Would you like to send money using username or account number: [username/number]: ");
-//        while (!valid) {
-//            String answer = new Scanner(System.in).nextLine();
-//            if (answer.equalsIgnoreCase("username")){
-//                sendMoneyToByUsername();
-//                valid = true;
-//            } if (answer.equalsIgnoreCase("number")){
-//                sendMoneyToByNumber();
-//                valid = true;
-//            }
-//            else {
-//                System.out.println("Incorrect input. Try again.");
-//            }
-//        }
-//    }
-//    private void sendMoneyToByNumber() {
-//        User user = getUserByAccNumber();
-//        if (user !=null) {
-//            sendMoney(user);
-//        }
-//    }
-
-//    public void sendMoney(User user) {
-//
-//        System.out.println("How much money would you like to sent?: ");
-//        boolean valid=false;
-//        while (!valid){
-//        double amount = askForAmount();
-//        if (amount > user.getAccount().getBalance()){
-//            System.out.println("You don't have enough money. Type again.");
-//        } else{
-//            bank.getUser(user.getUsername()).getAccount().addMoney(amount);
-//            user.getAccount().takeMoney(amount);
-//            System.out.println("Money has been successfully sent.");
-//            valid = true;}
-//    }
-
-
-//    }
-
-//    private User getUserByAccNumber() {
-//        User user = bank.getUserByAccountNum(typeAccNumber());
-//        if (user != null){
-//            return user;
-//        } else {
-//            System.out.println("No such account number in our database.");
-//        }
-//        return null;
-//    }
-
-    private int typeAccNumber() {
-            int accnumber=-1;
-            boolean valid = false;
-        do{
-            try {
-                accnumber = new Scanner(System.in).nextInt();
+    public void sendMoneyTo() {
+        boolean valid = false;
+        while (!valid) {
+            System.out.println("Enter the name of the user you would like to send money to.");
+            String username = new Scanner(System.in).nextLine();
+            if (bank.getUser(username) != null){
+                sendMoney(bank.getUser(username));
                 valid = true;
-                return accnumber;
-            } catch (Exception e) {
-                System.out.println("Type a number.");
-                //new Scanner(System.in).nextInt();
-            };
-    } while (!valid);
-        return accnumber;
+            }
+            else {
+                System.out.println("Incorrect username. Try again.");
+            }
+        }
     }
 
-//    private void sendMoneyToByUsername() {
-//        String username = new Scanner(System.in).nextLine();
-//        User user = bank.getUser(username);
-//        sendMoney(user);
-//    }
+    public void sendMoney(User receiver) {
+
+        System.out.println("How much money would you like to sent?: ");
+        boolean valid=false;
+        while (!valid){
+        double amount = askForAmount();
+        if (amount > user.getAccount().getBalance()){
+            System.out.println("You don't have enough money. Type again.");
+        } else{
+            bank.getUser(user.getUsername()).getAccount().addMoney(amount);
+            user.getAccount().takeMoney(amount);
+            receiver.getAccount().addMoney(amount);
+            user.writeDownTransaction("money transfer", amount,receiver.getAccount());
+            System.out.println();
+            System.out.println("Money has been successfully sent.");
+            valid = true;}
+    }
+  }
+
+
 
     //4
     private void showTransactions() {
@@ -299,18 +257,21 @@ public class Menu {
     }
 
     //0
-    private void exitOrLogout() {
+    private boolean exitOrLogout() {
         System.out.println("Do you want to exit the system or log into a different account? (exit/logout): ");
         String answer = keyboard.nextLine();
         if (answer.equalsIgnoreCase("exit") || answer.equalsIgnoreCase("logout")) {
             if (answer.equalsIgnoreCase("exit")) {
                 System.out.println("Goodbye, " + user.getUsername());
+                System.exit(0);
             } else {
                 System.out.println("Logging out");
+                return true;
             }
         } else {
             System.out.println("Wrong input");
         }
+        return false;
     }
 
 

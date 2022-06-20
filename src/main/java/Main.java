@@ -8,12 +8,10 @@ public class Main {
         Bank bank = new Bank();
 
         Login login = new Login(bank);
-        login.runLogin();
+        login.runlogin();
 
-//        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
-//        menu.runMenu();
-//        //menu.sendMoneyTo();
-
+        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
+        menu.runMenu();
 
     }
 }

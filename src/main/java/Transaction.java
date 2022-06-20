@@ -23,7 +23,7 @@ public class Transaction {
     public String toString(){
         return "-----------------------------------------\n" +
                 "Amount: " + amount + "\nType: " + type +
-                "\nReceiver: " + receiverAccNum + "\nTime of transaction: " + time
+                "\nReceiver: " + receiverAccNum +  "\nTime of transaction: " + time
                 +  "\n-----------------------------------------";
     }
 

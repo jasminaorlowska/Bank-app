@@ -1,8 +1,5 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Map;
 public class Login {
 
     Scanner keyboard = new Scanner(System.in);
@@ -13,9 +10,10 @@ public class Login {
         this.bank = bank;
     }
     boolean exit;
+    String username;
 
 
-    public void runLogin() throws IOException {
+    public void runlogin() throws IOException {
         printHeader();
         while(!exit){
             printLogin();
@@ -54,7 +52,6 @@ public class Login {
         return choice;
     }
 
-
     private void performAction(int choice) throws IOException {
         switch (choice){
             case 0:
@@ -62,7 +59,7 @@ public class Login {
                 System.exit(0);
                 break;
             case 1:
-                login();
+                this.username = login();
                 break;
             case 2:
                 createUser();
@@ -72,7 +69,7 @@ public class Login {
         }
     }
 
-    protected void createUser() {
+    private void createUser() throws IOException{
 
         Scanner scanner = new Scanner(System.in);
 
@@ -83,16 +80,26 @@ public class Login {
         while (!valid) {
 
             boolean validData = false;
+
             while (!validData) {
+
                 System.out.println("Enter your username: ");
                 username = scanner.nextLine();
-                if (username.length() < 5) {
-                    System.out.println("Username needs to be at least 5 characters long.");
-                } else {
+                if (username.length() < 5  || bank.checkBank(0, username)) {
+                    if (username.length() < 5){
+                    System.out.println("Username needs to be at least 7 characters long.");
+                    }
+                    else{
+                        System.out.println("User already exists.");
+                    }
+                }
+                else {
                     validData = true;
                 }
             }
+
             validData = false;
+
             while (!validData) {
                 System.out.println("Enter your password: ");
                 password = scanner.nextLine();
@@ -101,8 +108,10 @@ public class Login {
                 } else {
                     validData = true;
                 }
+            }
 
                 validData = false;
+
                 while (!validData) {
                 System.out.println("Enter your initial balance: ");
                 try {
@@ -113,26 +122,29 @@ public class Login {
                 if (balance < 1000) {
                     System.out.println("Initial balance must be at least 1000");
                 } else {
-                    valid = true;
                     validData = true;
-                }}
-            }}
+                    }
+                }
+
+            valid = true;
+            }
 
 
             if (valid = true) {
                 CheckingAccount account = new CheckingAccount(balance);
                 User user = new User(username, account);
+                account.setOwner(user.getUsername());
                 bank.addUser(user, password);
                 System.out.println("Registration successful.");
         }
     }
 
+    private String login (){
 
-        private void login () throws IOException {
+        String username, password;
+        boolean logged = false;
 
-            String username, password;
-            boolean logged = false;
-            bank.readFromFile();
+        while (!logged) {
 
             System.out.println("Enter your username:");
             username = keyboard.nextLine();
@@ -140,31 +152,20 @@ public class Login {
             System.out.println("Enter your password:");
             password = keyboard.nextLine();
 
-
-            while (!logged) {
-
-                Iterator it = bank.forLogin.entrySet().iterator();
-
-                while (it.hasNext()) {
-                    Map.Entry<String, String> m = (Map.Entry) it.next();
-                    if (m.getKey().equals(username)) {
-                        if (m.getValue().equals(password)) {
-                            System.out.println("You've successfully logged in!");
-                            logged = true;
-                            break;
-                        } else {
-                            System.out.println("Password is incorrect. Try again.");
-                        }
-                    }
-
+            if (bank.checkBank(0, username)){
+                if (bank.checkBank(1, password)){
+                    System.out.println("You've successfully logged in!");
+                    Menu menu = new Menu(bank.getUser(username), bank);
+                    menu.runMenu();
+                    logged=true;
+                } else {
+                    System.out.println("Incorrect password.");
                 }
-                break;
-
             }
-
-//
+            else {System.out.println("Incorrect username. Try again.");};
         }
-
+        return null;
+    }
 
     }
 

@@ -13,6 +13,10 @@ public class User {
         this.account = account;
     }
 
+    public void setNumberOfLoans(int numberOfLoans) {
+        this.numberOfLoans = numberOfLoans;
+    }
+
     public String getUsername() {
         return username;
     }
