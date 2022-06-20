@@ -148,9 +148,10 @@ public class Login {
 
             System.out.println("Enter your username:");
             username = keyboard.nextLine();
-
+            if (username.equalsIgnoreCase("exit")){break;}
             System.out.println("Enter your password:");
             password = keyboard.nextLine();
+            if (password.equalsIgnoreCase("exit")){break;}
 
             if (bank.checkBank(0, username)){
                 if (bank.checkBank(1, password)){
@@ -159,10 +160,10 @@ public class Login {
                     menu.runMenu();
                     logged=true;
                 } else {
-                    System.out.println("Incorrect password.");
+                    System.out.println("Incorrect password. Try again. To exit type 'exit'.");
                 }
             }
-            else {System.out.println("Incorrect username. Try again.");};
+            else {System.out.println("Incorrect username. Try again. To exit type 'exit'.");};
         }
         return null;
     }

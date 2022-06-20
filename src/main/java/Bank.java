@@ -29,11 +29,12 @@ public class Bank {
             }
         } return null;
     }
+    public List<SavingsAccount> getSavingAccounts(){return savingAccounts;}
 
     public void addUser(User user, String password)  {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("dane.csv", true));
-            bw.write(user.getUsername() + "," + password + "," + user.getAccount().getNumber() + ",null" );
+            bw.write(user.getUsername() + "," + password + "," + user.getAccount().getNumber() + ",null,0" );
             bw.newLine();
             bw.close();
         } catch(IOException ioe){

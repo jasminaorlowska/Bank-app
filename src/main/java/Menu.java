@@ -1,5 +1,3 @@
-import jdk.jshell.EvalException;
-
 import java.util.Scanner;
 
 public class Menu {
@@ -125,8 +123,9 @@ public class Menu {
     public void sendMoneyTo() {
         boolean valid = false;
         while (!valid) {
-            System.out.println("Enter the name of the user you would like to send money to.");
+            System.out.println("Enter the name of the user you would like to send money to. To exit type 'exit'.");
             String username = new Scanner(System.in).nextLine();
+            if (username.equalsIgnoreCase("exit")){break;}
             if (bank.getUser(username) != null){
                 sendMoney(bank.getUser(username));
                 valid = true;
@@ -136,7 +135,6 @@ public class Menu {
             }
         }
     }
-
     public void sendMoney(User receiver) {
 
         System.out.println("How much money would you like to sent?: ");
@@ -166,17 +164,21 @@ public class Menu {
     //5
     private void mySavingsAccount() {
         if(user.hasSavingsAccount()){
-            System.out.println("You already have a saving account. Here are the details.");
-            System.out.println(user.getSavingsAccount().toString());
+            System.out.println("You have a bank account. What you want to do?");
+            System.out.println("0) See the details\n1) Transfer Money");
+            int choice = Login.getInput(new Scanner(System.in), 1);
+            switch (choice) {
+                case 0: System.out.println(user.getSavingsAccount().toString());
+                case 1: TransferMoneySavingsAccount();
+            }
         } else {
             System.out.println("You don't have a saving account. Do you want to create one? [yes/no]: ");
             boolean valid = false;
             while (!valid) {
                 String answer = new Scanner(System.in).nextLine();
-                if (answer.equalsIgnoreCase("yes")) {
-                    createSavingsAccount();
-                    valid = true;
-                } if (answer.equalsIgnoreCase("no")){
+                if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("no")) {
+                    if (answer.equalsIgnoreCase("yes")){createSavingsAccount();
+                        System.out.println("Account created.");}
                     valid = true;
                 } else {
                     System.out.println("Incorrect input.");
@@ -184,9 +186,29 @@ public class Menu {
                 }
             }
         }
-    private void createSavingsAccount() {
-
+    private void TransferMoneySavingsAccount() {
+        boolean valid = false;
+        System.out.println("You are going to transfer money to your personal savings account.");
+        while(!valid){
+        double amount = askForAmount();
+        if (amount<user.getAccount().getBalance()){
+            System.out.println("You have just transfered " + amount + " $ to your savings account.");
+            user.getAccount().takeMoney(amount);
+            user.getSavingsAccount().addMoney(amount);
+            user.writeDownTransaction("to savings account", amount, user.getSavingsAccount());
+            valid=true;
+        } else {
+            System.out.println("You don't have enough money.");
+        }
+        }
     }
+    private void createSavingsAccount() {
+        SavingsAccount savingsAccount = new SavingsAccount(0);
+        savingsAccount.setOwner(user.getUsername());
+        user.addSavingsAccount(savingsAccount);
+        bank.getSavingAccounts().add(savingsAccount);
+    }
+
 
     //6
     private void displayAccount() {
@@ -265,7 +287,7 @@ public class Menu {
                 System.out.println("Goodbye, " + user.getUsername());
                 System.exit(0);
             } else {
-                System.out.println("Logging out");
+                System.out.println("Logging out. Goodbye, " + user.getUsername());
                 return true;
             }
         } else {
