@@ -1,20 +1,19 @@
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.Map;
 public class Login {
 
     Scanner keyboard = new Scanner(System.in);
 
-    //Bank bank = new Bank(); przeniesione do maina
-
     private Bank bank;
     public Login(Bank bank){
+
         this.bank = bank;
     }
-
     boolean exit;
+    String username;
 
 
-    public void runLogin(){
+    public void runlogin() throws IOException {
         printHeader();
         while(!exit){
             printLogin();
@@ -53,16 +52,15 @@ public class Login {
         return choice;
     }
 
-
-    private void performAction(int choice) {
+    private void performAction(int choice) throws IOException {
         switch (choice){
             case 0:
                 System.out.println("Goodbye.");
                 System.exit(0);
                 break;
             case 1:
-                login();
-                //break;
+                this.username = login();
+                break;
             case 2:
                 createUser();
                 break;
@@ -71,69 +69,108 @@ public class Login {
         }
     }
 
-    private void login() {
+    private void createUser() throws IOException{
+
+        Scanner scanner = new Scanner(System.in);
+
+        String username = null, password = null;
+        Double balance = null;
+        boolean valid = false;
+
+        while (!valid) {
+
+            boolean validData = false;
+
+            while (!validData) {
+
+                System.out.println("Enter your username: ");
+                username = scanner.nextLine();
+                if (username.length() < 5  || bank.checkBank(0, username)) {
+                    if (username.length() < 5){
+                    System.out.println("Username needs to be at least 7 characters long.");
+                    }
+                    else{
+                        System.out.println("User already exists.");
+                    }
+                }
+                else {
+                    validData = true;
+                }
+            }
+
+            validData = false;
+
+            while (!validData) {
+                System.out.println("Enter your password: ");
+                password = scanner.nextLine();
+                if (password.length() < 7) {
+                    System.out.println("Password needs to be at least 7 characters long.");
+                } else {
+                    validData = true;
+                }
+            }
+
+                validData = false;
+
+                while (!validData) {
+                System.out.println("Enter your initial balance: ");
+                try {
+                    balance = (Double.parseDouble(scanner.nextLine()));
+                } catch (NumberFormatException e) {
+                    System.out.println("Initial balance must be a number.");
+                }
+                if (balance < 1000) {
+                    System.out.println("Initial balance must be at least 1000");
+                } else {
+                    validData = true;
+                    }
+                }
+
+            valid = true;
+            }
+
+
+            if (valid = true) {
+                CheckingAccount account = new CheckingAccount(balance);
+                User user = new User(username, account);
+                account.setOwner(user.getUsername());
+                bank.addUser(user, password);
+                System.out.println("Registration successful.");
+        }
+    }
+
+    private String login (){
 
         String username, password;
         boolean logged = false;
 
-        System.out.println("Enter your username:");
-        //warunki na username
-        username = keyboard.nextLine();
-
-        System.out.println("Enter your password:");
-        //warunki na password
-        password = keyboard.nextLine();
-
-        //????
-        while(!logged) {
-            for (Map.Entry<User, String> entry : bank.getLoginInfo().entrySet()) {
-                if (entry.getKey().getUsername() == username) {
-                    if (entry.getValue() == password) {
-                        System.out.println("Login successful");
-                        logged=true;
-                        //Tutaj ważna sprawa bo otwieramy nową funkcję już to menu
-                    }
-                    System.out.println("Wrong password");
-                }
-            }
-        }
-
-
-
-
-
-    }
-
-    private void createUser() {
-
-        Scanner scanner = new Scanner(System.in);
-
-        String username, password;
-        Double balance; //inicjalna kwata aby otworzyc konto
-
-        //warunki na stworzenie konta
-        //boolean valid=false;
-        //while (!valid){
+        while (!logged) {
 
             System.out.println("Enter your username:");
-            //warunki na username
-            username = scanner.nextLine();
-
+            username = keyboard.nextLine();
+            if (username.equalsIgnoreCase("exit")){break;}
             System.out.println("Enter your password:");
-            //warunki na password
-            password = scanner.nextLine();
+            password = keyboard.nextLine();
+            if (password.equalsIgnoreCase("exit")){break;}
 
-            System.out.println("Enter initial balance:");
-            // warunek na initial balance ??powyzej 2000?
-            balance = scanner.nextDouble();
-
-        //}
-
-        CheckingAccount account = new CheckingAccount(balance);
-        User user = new User(username, account);
-
-        //System.out.println("creating an account");
-        //System.out.println(bank.getAccounts());
+            if (bank.checkBank(0, username)){
+                if (bank.checkBank(1, password)){
+                    System.out.println("You've successfully logged in!");
+                    Menu menu = new Menu(bank.getUser(username), bank);
+                    menu.runMenu();
+                    logged=true;
+                } else {
+                    System.out.println("Incorrect password. Try again. To exit type 'exit'.");
+                }
+            }
+            else {System.out.println("Incorrect username. Try again. To exit type 'exit'.");};
+        }
+        return null;
+    }
 
     }
-}
+
+
+
+
+

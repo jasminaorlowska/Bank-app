@@ -4,7 +4,7 @@ abstract class Account {
 
     private int number;
     private double balance;
-    private User owner;
+    private String owner;
 
     public Account(double balance){
         this.balance = balance;
@@ -13,7 +13,11 @@ abstract class Account {
         this.number = number;
     }
 
-    protected void setOwner(User user){
+    public void setNumber(int number){
+        this.number = number;
+    }
+
+    protected void setOwner(String user){
       this.owner = user;
     }
 
@@ -23,6 +27,10 @@ abstract class Account {
 
     public double getBalance(){
         return balance;
+    }
+
+    public String getOwner() {
+        return owner;
     }
 
     public void withdraw(double amount){
@@ -44,6 +52,7 @@ abstract class Account {
     public void addMoney(double amount){
         balance = balance + amount;
     }
+
     public void takeMoney (double amount) {balance = balance - amount;}
 
     @Override
