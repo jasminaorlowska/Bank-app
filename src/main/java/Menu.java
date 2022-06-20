@@ -6,7 +6,6 @@ public class Menu {
     boolean exit;
 
     private User user;
-
     private Bank bank;
 
     public Menu(User user, Bank bank){
@@ -25,9 +24,9 @@ public class Menu {
 
     private void printMenu(){
 
-        System.out.println("Select:");
+        System.out.println("\nSelect:\n");
         System.out.println("1) Make Deposit  2) Make withdrawal  3) Send money  4) Show history");
-        System.out.println("5) Display account info  6) Savings Account 7) Get a loan  0) Exit");
+        System.out.println("5) Display account info  6) Savings Account 7) Get a loan  0) Exit\n");
 
     }
 
@@ -79,7 +78,7 @@ public class Menu {
         boolean valid = false;
         if (user.hasSavingsAccount()){
             while(!valid){
-                System.out.println("Pick an account: savings/checking:");
+                System.out.println("Pick an account [savings/checking]: ");
                 account = keyboard.nextLine();
                 if (account.equalsIgnoreCase("checking") || account.equalsIgnoreCase("savings")){
                     if (account.equalsIgnoreCase("savings")){
@@ -94,23 +93,19 @@ public class Menu {
     }
     private Double askForAmount() {
 
-        boolean incorrectDouble = true;
-
         System.out.println("Enter the amount of money:");
 
-        while (incorrectDouble) {
+        while (true) {
             try {
                 double amount = new Scanner(System.in).nextDouble();
                 if (amount<=0){
                     System.out.println("You can't type negative number. Type again.");continue;
                 }
-                incorrectDouble = false;
                 return amount;
             } catch (Exception e) {
                 System.out.println("Type a double. Use commas.");
             }
         }
-        return 0.0;
     }
     private void makeWithdrawal(){
         Account pickedAccount = pickAccount();
@@ -120,7 +115,7 @@ public class Menu {
     }
 
     //3
-    public void sendMoneyTo() {
+    private void sendMoneyTo() {
         boolean valid = false;
         while (!valid) {
             System.out.println("Enter the name of the user you would like to send money to. To exit type 'exit'.");
@@ -135,7 +130,7 @@ public class Menu {
             }
         }
     }
-    public void sendMoney(User receiver) {
+    private void sendMoney(User receiver) {
 
         System.out.println("How much money would you like to sent?: ");
         boolean valid=false;
@@ -168,8 +163,8 @@ public class Menu {
             System.out.println("0) See the details\n1) Transfer Money");
             int choice = Login.getInput(new Scanner(System.in), 1);
             switch (choice) {
-                case 0: System.out.println(user.getSavingsAccount().toString());
-                case 1: TransferMoneySavingsAccount();
+                case 0 -> System.out.println(user.getSavingsAccount().toString());
+                case 1 -> TransferMoneySavingsAccount();
             }
         } else {
             System.out.println("You don't have a saving account. Do you want to create one? [yes/no]: ");
@@ -177,8 +172,10 @@ public class Menu {
             while (!valid) {
                 String answer = new Scanner(System.in).nextLine();
                 if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("no")) {
-                    if (answer.equalsIgnoreCase("yes")){createSavingsAccount();
-                        System.out.println("Account created.");}
+                    if (answer.equalsIgnoreCase("yes")){
+                        createSavingsAccount();
+                        System.out.println("Account created.");
+                    }
                     valid = true;
                 } else {
                     System.out.println("Incorrect input.");
@@ -224,7 +221,7 @@ public class Menu {
 
             int maxLoan = checkLoan();
 
-            System.out.println("Do you want to take a loan?: [yes/no]: ");
+            System.out.println("Do you want to take a loan? [yes/no]: ");
             boolean valid = false;
 
             while (!valid) {
@@ -266,7 +263,8 @@ public class Menu {
         double balance = user.getAccount().getBalance();
         double percentage = 1;
         int availableLoan;
-        if (user.getNumberOfLoans() ==1) {percentage = .75;}
+        if (user.getNumberOfLoans() >0) {percentage = .75;}
+        if (user.getNumberOfLoans() >1){percentage = .5;}
         if(balance < 20000){
             if (balance < 10000){
                 availableLoan = (int)(balance * percentage * 1.3);

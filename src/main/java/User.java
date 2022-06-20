@@ -5,7 +5,7 @@ public class User {
     private String username;
     private CheckingAccount account;
     private SavingsAccount savingsAccount;
-    private ArrayList<Transaction> transactionHistory = new ArrayList<Transaction>();
+    private ArrayList<Transaction> transactionHistory = new ArrayList<>();
     private int numberOfLoans = 0;
 
     public User(String username, CheckingAccount account) {
@@ -22,11 +22,7 @@ public class User {
     }
 
     public boolean hasSavingsAccount() {
-        if (savingsAccount != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return savingsAccount != null;
     }
     public void addSavingsAccount(SavingsAccount account) {
         if (!hasSavingsAccount()) {
@@ -61,9 +57,14 @@ public class User {
         transactionHistory.add(transaction);
     }
     public void showTransactions() {
-        System.out.println("---------------------\nTransactions history\n---------------------");
-        for (Transaction transaction : transactionHistory) {
-            System.out.println(transaction);
+        if (transactionHistory.isEmpty()) {
+            System.out.println("You don't have any transactions.");
+        } else {
+            System.out.println("---------------------\nTransactions history\n---------------------");
+
+            for (Transaction transaction : transactionHistory) {
+                System.out.println(transaction);
+            }
         }
     }
 
