@@ -13,15 +13,17 @@ public class Bank {
     private List<SavingsAccount> savingAccounts;
     private HashMap<User, String> bankInfo;
 
-    public Bank() throws IOException{
+    public Bank(){
        this.bankAccounts = readBankAccountsCSV();
-       this.bankInfo = readBankInfoCSV();
        this.savingAccounts = readSavingsAccounts();
+
+       this.bankInfo = readBankInfoCSV();
     }
 
-    public HashMap<User, String> getbankInfo() {
-        return bankInfo;
-    }
+//    public HashMap<User, String> getbankInfo() {
+//        return bankInfo;
+//    }
+
     public User getUser (String username){
         for (User user : bankInfo.keySet()){
             if (username.equals(user.getUsername())){
@@ -67,10 +69,8 @@ public class Bank {
     }
     private SavingsAccount createSavingAccount(String[] data){
         int number = Integer.parseInt(data[0]);
-        String owner = data[1];
-        double balance = Double.parseDouble(data[2]);
+        double balance = Double.parseDouble(data[1]);
         SavingsAccount account = new SavingsAccount(balance);
-        account.setOwner(owner);
         account.setNumber(number);
         return account;
     }
@@ -83,7 +83,7 @@ public class Bank {
         User user = new User(username, matchAccountWithUser(username, numberBankAcc));
         if (!data[3].equals("null")) {
             int numberSavingBankAcc = Integer.parseInt(data[3]);
-            SavingsAccount usersSavingAcc = matchSavingsAccountWithUser(username,numberSavingBankAcc);
+            SavingsAccount usersSavingAcc = matchSavingsAccountWithUser(numberSavingBankAcc);
             user.addSavingsAccount(usersSavingAcc);
         }
         user.setNumberOfLoans(numberLoans);
@@ -99,19 +99,17 @@ public class Bank {
             }
         } return new CheckingAccount(4000);
     }
-    private SavingsAccount  matchSavingsAccountWithUser(String username, int number){
+    private SavingsAccount  matchSavingsAccountWithUser(int number){
         for (SavingsAccount account : savingAccounts){
-            if (account.getOwner().equals(username)){
-                if (account.getNumber() == number){
+            if (account.getNumber() == number){
                     return account;}
-            }
         } return null;
     }
 
     //dwie funkcje które tworzą listę i hashmapę na podstawie dwóch plików CSV
     private List<CheckingAccount> readBankAccountsCSV(){
         List<CheckingAccount> bankAccounts = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("kontaBankowe.csv"));)
+        try (BufferedReader br = new BufferedReader(new FileReader("kontaBankowe.csv")))
         {
             String line = br.readLine();
             while (line!=null){
@@ -121,9 +119,9 @@ public class Bank {
                 line = br.readLine();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found.");;
+            System.out.println("File not found.");
         } catch (IOException e) {
-            System.out.println("Something went wrong");;
+            System.out.println("Something went wrong");
         }
     return bankAccounts;
     }
@@ -139,17 +137,17 @@ public class Bank {
                 line = br.readLine();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found.");;
+            System.out.println("File not found.");
         } catch (IOException e) {
-            System.out.println("Something went wrong");;
+            System.out.println("Something went wrong");
         }
         return savingsAccounts;
     }
     private HashMap<User, String> readBankInfoCSV(){
 
-        HashMap<User, String> bankInfo = new HashMap<User, String>();
+        HashMap<User, String> bankInfo = new HashMap<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("dane.csv"));)
+        try (BufferedReader br = new BufferedReader(new FileReader("dane.csv")))
         {
             String line = br.readLine();
             while (line!=null){
@@ -159,62 +157,28 @@ public class Bank {
                 line = br.readLine();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found.");;
+            System.out.println("File not found.");
         } catch (IOException e) {
-            System.out.println("Something went wrong");;
+            System.out.println("Something went wrong");
         }
         return bankInfo;
     }
-
-
-//    private void readDaneCSV() throws IOException {
-//
-//        Reader in = new FileReader("dane.csv");
-//        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
-//
-//        for (CSVRecord record : records){
-//            forLogin.put(record.get(0), record.get(1));
-//
-//        }
-//    }
-
 
 
     //function that compares the values in CSV data file.
     public boolean checkBank(int column, String infoToCheck) {
             try(
                     BufferedReader br = new BufferedReader(new FileReader("dane.csv"));
-                    CSVParser parser = CSVFormat.DEFAULT.parse(br);
+                    CSVParser parser = CSVFormat.DEFAULT.parse(br)
             ) {
                 for(CSVRecord record : parser) {
                     if (record.get(column).equals(infoToCheck)) {return true;}
                 }
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("Something went wrong.");
             }
             return false;
     }
-
-//    public void updateAccount(String accountNumber){
-//        try(
-//                BufferedReader br = new BufferedReader(new FileReader("kontaBankowe.csv"));
-//                CSVParser parser = CSVFormat.DEFAULT.parse(br);
-//        ) {
-//            for(CSVRecord record : parser) {
-//                if (record.get(0).equals(accountNumber)) {
-//
-//                }
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
-//    }
-//    public void updateInfo(String toUpdate, String Updated) {
-
-
-
-
-
 
 
 }

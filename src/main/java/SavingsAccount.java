@@ -40,6 +40,18 @@ public class SavingsAccount extends Account {
     }
 
     @Override
+    public void takeMoney(double amount) {
+        super.takeMoney(amount);
+        setInterest();
+    }
+    @Override
+    public void addMoney(double amount) {
+        super.addMoney(amount);
+        setInterest();
+    }
+
+
+    @Override
     public String toString() {
         return "Type: Savings Account\n" + super.toString() + "\nInterest: " + getInterest();
     }

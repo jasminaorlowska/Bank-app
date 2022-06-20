@@ -41,13 +41,13 @@ abstract class Account {
         System.out.println("You have successfully withdrawn " + amount + "$.");
         System.out.println("You have " + getBalance() + " $ left on your account." );
         }
-    };
+    }
 
     public void deposit(double amount){
-        balance =+ balance+amount;
+        balance = balance+amount;
         System.out.println("You have successfully deposited " + amount + "$.");
         System.out.println("You have " + getBalance() + " $ left on your account." );
-    };
+    }
 
     public void addMoney(double amount){
         balance = balance + amount;
@@ -60,5 +60,6 @@ abstract class Account {
         return "Number: " + number +
                 "\nBalance: " + balance;
     }
+
 
 }

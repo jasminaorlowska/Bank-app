@@ -8,8 +8,5 @@ public class Main {
         Login login = new Login(bank);
         login.runlogin();
 
-        Menu menu = new Menu(bank.getUser("ProbnyUser"), bank);
-        menu.runMenu();
-
     }
 }

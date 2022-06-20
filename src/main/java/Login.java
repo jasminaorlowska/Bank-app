@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 public class Login {
 
@@ -13,7 +12,7 @@ public class Login {
     String username;
 
 
-    public void runlogin() throws IOException {
+    public void runlogin() {
         printHeader();
         while(!exit){
             printLogin();
@@ -30,10 +29,10 @@ public class Login {
     }
 
     private void printLogin() {
-        System.out.println("Select");
+        System.out.println("\nSelect:\n");
         System.out.println("1) To log in");
         System.out.println("2) To register");
-        System.out.println("0) To exit");
+        System.out.println("0) To exit\n");
     }
 
     public static int getInput(Scanner keyboard, int options) {
@@ -52,7 +51,7 @@ public class Login {
         return choice;
     }
 
-    private void performAction(int choice) throws IOException {
+    private void performAction(int choice) {
         switch (choice){
             case 0:
                 System.out.println("Goodbye.");
@@ -69,7 +68,7 @@ public class Login {
         }
     }
 
-    private void createUser() throws IOException{
+    private void createUser() {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -125,18 +124,14 @@ public class Login {
                     validData = true;
                     }
                 }
-
             valid = true;
             }
 
-
-            if (valid = true) {
                 CheckingAccount account = new CheckingAccount(balance);
                 User user = new User(username, account);
                 account.setOwner(user.getUsername());
                 bank.addUser(user, password);
                 System.out.println("Registration successful.");
-        }
     }
 
     private String login (){
@@ -163,7 +158,7 @@ public class Login {
                     System.out.println("Incorrect password. Try again. To exit type 'exit'.");
                 }
             }
-            else {System.out.println("Incorrect username. Try again. To exit type 'exit'.");};
+            else {System.out.println("Incorrect username. Try again. To exit type 'exit'.");}
         }
         return null;
     }
