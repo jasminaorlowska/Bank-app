@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Menu {
+public class Menu implements Run, IMenu{
 
     Scanner keyboard = new Scanner(System.in);
     boolean exit;
@@ -14,15 +14,15 @@ public class Menu {
     }
 
 
-    public void runMenu(){
+    public void run(){
         while(!exit){
-            printMenu();
+            print();
             int choice = Login.getInput(keyboard, 8);
-            performActionMenu(choice);
+            performAction(choice);
         }
     }
 
-    private void printMenu(){
+    private void print(){
 
         System.out.println("\nSelect:\n");
         System.out.println("1) Make Deposit  2) Make withdrawal  3) Send money  4) Show history");
@@ -30,7 +30,7 @@ public class Menu {
 
     }
 
-    private void performActionMenu(int choice) {
+    private void performAction(int choice) {
             switch (choice) {
                 case 0:
                     exit = exitOrLogout();
@@ -92,7 +92,6 @@ public class Menu {
 
     }
     private Double askForAmount() {
-
         System.out.println("Enter the amount of money:");
 
         while (true) {
@@ -194,6 +193,7 @@ public class Menu {
             user.getSavingsAccount().addMoney(amount);
             user.writeDownTransaction("to savings account", amount, user.getSavingsAccount());
             valid=true;
+
         } else {
             System.out.println("You don't have enough money.");
         }
@@ -275,6 +275,8 @@ public class Menu {
             System.out.println("Available loan: " +availableLoan);return availableLoan;}
         return -1;
     }
+
+
 
     //0
     private boolean exitOrLogout() {

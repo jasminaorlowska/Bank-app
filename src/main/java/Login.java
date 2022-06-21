@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class Login {
+public class Login implements Run{
 
     Scanner keyboard = new Scanner(System.in);
 
@@ -12,10 +12,10 @@ public class Login {
     String username;
 
 
-    public void runlogin() {
+    public void run() {
         printHeader();
         while(!exit){
-            printLogin();
+            print();
             int choice = getInput(keyboard, 4);
             performAction(choice);
         }
@@ -28,7 +28,7 @@ public class Login {
         System.out.println("+---------------------------+");
     }
 
-    private void printLogin() {
+    private void print() {
         System.out.println("\nSelect:\n");
         System.out.println("1) To log in");
         System.out.println("2) To register");
@@ -152,7 +152,7 @@ public class Login {
                 if (bank.checkBank(1, password)){
                     System.out.println("You've successfully logged in!");
                     Menu menu = new Menu(bank.getUser(username), bank);
-                    menu.runMenu();
+                    menu.run();
                     logged=true;
                 } else {
                     System.out.println("Incorrect password. Try again. To exit type 'exit'.");

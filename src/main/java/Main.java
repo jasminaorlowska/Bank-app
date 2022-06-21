@@ -6,7 +6,7 @@ public class Main {
         Bank bank = new Bank();
 
         Login login = new Login(bank);
-        login.runlogin();
+        login.run();
 
     }
 }

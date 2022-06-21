@@ -1,3 +1,5 @@
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -9,16 +11,35 @@ import java.util.List;
 
 public class Bank {
 
-    private  List<CheckingAccount> bankAccounts;
+    private List<CheckingAccount> bankAccounts;
     private List<SavingsAccount> savingAccounts;
     private HashMap<User, String> bankInfo;
 
-    public Bank(){
+
+
+    public Bank() {
        this.bankAccounts = readBankAccountsCSV();
        this.savingAccounts = readSavingsAccounts();
-
        this.bankInfo = readBankInfoCSV();
     }
+
+//    public void updatingDane() throws IOException, CsvException {
+//        CSVReader daneReader = new CSVReader(new FileReader(new File("dane.csv")));
+//        List<String[]> bankInfoUpdated = daneReader.readAll();
+//
+//    }
+//
+//    public void updatingAccounts() throws IOException, CsvException {
+//        CSVReader kontoBankoweReader = new CSVReader(new FileReader(new File("kontaBankowe.csv")));
+//        List<String[]> bankAccountsUpdated = kontoBankoweReader.readAll();
+//
+//    }
+//
+//    public void updatingSavings() throws IOException, CsvException {
+//        CSVReader kontoOszczednoscioweReader = new CSVReader(new FileReader(new File("kontaOszczednościowe.csv")));
+//        List<String[]> savingAccountsUpdated = kontoOszczednoscioweReader.readAll();
+//
+//    }
 
 //    public HashMap<User, String> getbankInfo() {
 //        return bankInfo;
@@ -32,7 +53,6 @@ public class Bank {
         } return null;
     }
     public List<SavingsAccount> getSavingAccounts(){return savingAccounts;}
-
     public void addUser(User user, String password)  {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("dane.csv", true));
